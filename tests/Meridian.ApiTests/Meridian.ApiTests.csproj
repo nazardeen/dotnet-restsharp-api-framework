@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageReference Include="RestSharp" Version="112.1.0" />
+    <PackageReference Include="JunitXml.TestLogger" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Referenced so the suite can host the service in-process on an ephemeral
+         port. Response contracts are asserted against the DTOs in Models/,
+         never against the server's own types. -->
+    <ProjectReference Include="../../src/Meridian.MockApi/Meridian.MockApi.csproj" />
+  </ItemGroup>
+
+</Project>

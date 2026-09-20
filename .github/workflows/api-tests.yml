@@ -1,0 +1,48 @@
+name: API Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 2 * * *'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      # Pull requests run the smoke tier; merges and the nightly run everything.
+      - name: Smoke tests
+        if: github.event_name == 'pull_request'
+        run: >
+          dotnet test --no-build --configuration Release
+          --filter "Category=Smoke"
+          --logger "junit;LogFilePath=TestResults/smoke.xml"
+
+      - name: Full suite
+        if: github.event_name != 'pull_request'
+        run: >
+          dotnet test --no-build --configuration Release
+          --logger "junit;LogFilePath=TestResults/full.xml"
+
+      - name: Publish results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-results
+          path: '**/TestResults/*.xml'
+          retention-days: 14

@@ -1,5 +1,7 @@
 # Meridian API Tests — C# / xUnit / RestSharp
 
+[![API Tests](https://github.com/nazardeen/dotnet-restsharp-api-framework/actions/workflows/api-tests.yml/badge.svg)](https://github.com/nazardeen/dotnet-restsharp-api-framework/actions/workflows/api-tests.yml)
+
 An API test suite for an order capture, four-eyes approval and FX reference-data service.
 
 This is a reference implementation of how I structure API automation: typed clients over RestSharp, contract DTOs owned by the tests rather than shared with the service, data builders, tiered suites for CI, and negative paths treated as first-class rather than an afterthought.
